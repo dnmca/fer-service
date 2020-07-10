@@ -42,7 +42,7 @@
     background-color: black;
     border: 1px solid white;
     font-family: "Ubuntu Mono";
-    font-size: 20px;
+    font-size: 25px;
     color:white;
   }
   
@@ -71,4 +71,74 @@
     font-family: "Ubuntu Mono";
     color: white;
     width: 100%;
+  }
+
+  .options {
+    height: 100px;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    background: black;
+    border 1px solid white;
+    width: 100%;
+  }
+
+  .camera_usage {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 640px;
+    height: 280px;
+  }
+
+  .output_options {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 640px;
+  }
+
+  .empty_options {
+    width: 150px;
+  }
+
+  .option_button {
+    color: white;
+    background-color: black;
+    font-family: "Ubuntu Mono";
+    font-size: 25px;
+    width: 180px;
+  }
+
+  input {
+    color: white;
+    background-color: black;
+    margin: 5px;
+    font-family: "Ubuntu Mono";
+    font-size: 25px;
+  }
+
+  .option_horizontal {
+    display: flex;
+    flex-direction: column;
+  }
+
+  #file_input {
+    width: 350px;
+    height: 36px;
+  }
+
+  #link_input {
+    width: 244px;
+    height: 30px;
+  }
+
+  #file_submit {
+    width: 350px;
+    height: 30px;
+  }
+
+  #link_submit {
+    width: 250px;
+    height: 30px;
   }

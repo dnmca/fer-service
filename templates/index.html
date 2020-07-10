@@ -27,7 +27,6 @@
                 <button id="startbutton">Estimate</button>
         </div>
 
-
         <canvas id="canvas">
         </canvas>
 
@@ -35,6 +34,27 @@
             <img id="photo" alt="The screen capture will appear in this box.">
         </div>
     </div>
+
+    <div class="options">
+        <div class="camera_usage">
+            <form class="option_horizontal" name="file_form" onsubmit="alert('Currently not implemented:(');return false">
+                <input type="file" id="file_input"/>
+                <input type="submit" value="Upload File" name="submit" id="file_submit" />
+            </form>
+            <form class="option_horizontal" name="url_form" onsubmit="alert('Currently not implemented:(');return false">
+                <input type="text" id="link_input"/>
+                <input type="submit" value="Submit URL" name="submit" id="link_submit" />
+            </form>
+        </div>
+        <div class="empty_options"></div>
+        <div class="output_options">
+            <button class="option_button" id="download_json">Save JSON</button>
+            <button class="option_button" id="download_image">Save image</button>
+        </div>
+    </div>
+
+    <a id="downloadAnchorElem" style="display:none"></a>
+
 </div>
 </body>
 </html>
