@@ -63,6 +63,8 @@ class EmotionEstimator:
 
         results = {}
 
+        print(faces)
+
         for face_id, data in faces.items():
             img = data['crop']
             img = cv2.resize(img, (self.input_w, self.input_h), interpolation=cv2.INTER_AREA)

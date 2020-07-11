@@ -63,11 +63,13 @@
             }, false);
 
         } else if (document.getElementById('imageChoice').checked) {
+            height = 480;
             document.getElementById('video').style.display = 'none';
             document.getElementById('link_form').style.display = 'none';
             document.getElementById('url_image').style.display = 'none';
 
         } else if (document.getElementById('urlChoice').checked) {
+            height = 480;
             document.getElementById('uploaded_image').style.display = 'none';
             document.getElementById('file_form').style.display = 'none';
             document.getElementById('video').style.display = 'none';
@@ -138,17 +140,77 @@
             img = document.getElementById('uploaded_image');
 
             if (image_input.files[0]) {
-                img.onload = function() {
-                    context.drawImage(img, 0, 0, width, height);
+                var promise = await new Promise(function(resolve, reject){
+                   img.onload = function () {resolve();};
+                   img.src = URL.createObjectURL(image_input.files[0]);
+                });
+
+                img_h = img.height;
+                img_w = img.width;
+
+                if (img_w < width) {
+                    var dx = int((width - img_w) / 2);
+                    var sx = 0;
+                } else if (img_w > width){
+                    var dx = 0;
+                    var sx = int((img.width - width) / 2);
+                } else {
+                    var dx = 0;
+                    var sx = 0;
                 }
-                img.src = URL.createObjectURL(image_input.files[0]);
+                if (img_h < height) {
+                    var dy = int((height - img_h) / 2);
+                    var sy = 0;
+                } else if (img_h > height) {
+                    var dy = 0;
+                    var sy = int((img.height - height) / 2);
+                } else {
+                    var dy = 0;
+                    var sy = 0;
+                }
+                context.drawImage(img, sx, sy, img_w - sx, img_h - sy, dx, dy, width - dx, height - dy);
             } else {
                 emptyImage();
             }
         } else if (document.getElementById('urlChoice').checked) {
+            url_input = document.getElementById('link_input');
+            img = document.getElementById('url_image');
 
+            if (url_input.value) {
+                var promise = await new Promise(function(resolve, reject){
+                    img.onload = function () {resolve();};
+                    img.setAttribute('crossOrigin', 'anonymous');
+                    img.src = url_input.value;
+                });
+
+                img_h = img.height;
+                img_w = img.width;
+
+                if (img_w < width) {
+                    var dx = int((width - img_w) / 2);
+                    var sx = 0;
+                } else if (img_w > width){
+                    var dx = 0;
+                    var sx = int((img.width - width) / 2);
+                } else {
+                    var dx = 0;
+                    var sx = 0;
+                }
+                if (img_h < height) {
+                    var dy = int((height - img_h) / 2);
+                    var sy = 0;
+                } else if (img_h > height) {
+                    var dy = 0;
+                    var sy = int((img.height - height) / 2);
+                } else {
+                    var dy = 0;
+                    var sy = 0;
+                }
+                context.drawImage(img, sx, sy, img_w - sx, img_h - sy, dx, dy, width - dx, height - dy);
+            } else {
+                emptyImage();
+            }
         }
-        console.log(canvas);
 
         localStorage.setItem('current_canvas', canvas.toDataURL('image/png'));
         let imageBlob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
@@ -174,6 +236,8 @@
             }
 
         var file = canvas.toDataURL('image/png');
+
+
         photo.setAttribute('src', file);
         localStorage.setItem('current_prediction', JSON.stringify(result))
 
