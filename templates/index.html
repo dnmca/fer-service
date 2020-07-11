@@ -17,34 +17,51 @@
         </h1>
     </div>
     
-    <div class='funcarea'>        
-        <div class="camera">
-        <video id="video">Video stream not available.</video>
+    <div class='funcarea'>
 
+        <div class="input_area" id="input_area">
+            <video id="video">Video stream not available.</video>
+            <form id="file_form">
+                <input type="file" id="file_input">
+            </form>
+            <img id="uploaded_image" src="">
+            <form id="link_form" type="submit">
+                <input type="text" id="link_input">
+            </form>
+            <img id="url_image" src="">
         </div>
 
         <div class='button'>
-                <button id="startbutton">Estimate</button>
+                <button id="estimate_button">Estimate</button>
         </div>
 
         <canvas id="canvas">
         </canvas>
 
         <div class="output">
-            <img id="photo" alt="The screen capture will appear in this box.">
+            <img id="photo">
         </div>
     </div>
 
     <div class="options">
         <div class="camera_usage">
-            <form class="option_horizontal" name="file_form" onsubmit="alert('Currently not implemented:(');return false">
-                <input type="file" id="file_input"/>
-                <input type="submit" value="Upload File" name="submit" id="file_submit" />
-            </form>
-            <form class="option_horizontal" name="url_form" onsubmit="alert('Currently not implemented:(');return false">
-                <input type="text" id="link_input"/>
-                <input type="submit" value="Submit URL" name="submit" id="link_submit" />
-            </form>
+            <input type="radio" id="webcamChoice" name="input_type" value="webcam" checked/>
+            <label for="webcamChoice" class="radio_label">Webcam</label>
+
+            <input type="radio" id="imageChoice" name="input_type" value="image" />
+            <label for="imageChoice" class="radio_label">Image</label>
+
+            <input type="radio" id="urlChoice" name="input_type" value="url"/>
+            <label for="urlChoice" class="radio_label">URL</label>
+
+<!--            <form class="option_horizontal" name="file_form" onsubmit="alert('Currently not implemented:(');return false">-->
+<!--                <input type="file" id="file_input"/>-->
+<!--                <input type="submit" value="Upload File" name="submit" id="file_submit" />-->
+<!--            </form>-->
+<!--            <form class="option_horizontal" name="url_form" onsubmit="alert('Currently not implemented:(');return false">-->
+<!--                <input type="text" id="link_input"/>-->
+<!--                <input type="submit" value="Submit URL" name="submit" id="link_submit" />-->
+<!--            </form>-->
         </div>
         <div class="empty_options"></div>
         <div class="output_options">
