@@ -7,72 +7,61 @@
 	<script src="static/js/capture.js"></script>
 </head>
 <body>
+    <div class="contentarea">
 
-
-<div class="contentarea">
-
-    <div class='textarea'>
-        <h1>
-            Facial Expression Recognition
-        </h1>
-    </div>
-    
-    <div class='funcarea'>
-
-        <div class="input_area" id="input_area">
-            <video id="video">Video stream not available.</video>
-            <form id="file_form">
-                <input type="file" id="file_input">
-            </form>
-            <img id="uploaded_image" src="">
-            <form id="link_form" type="submit">
-                <input type="text" id="link_input">
-            </form>
-            <img id="url_image" src="">
+        <div class='textarea'>
+            <h1 class="title">
+                Facial Expression Recognition
+            </h1>
         </div>
 
-        <div class='button'>
+        <div class='funcarea'>
+
+            <div class="input_area" id="input_area">
+                <video id="video">Video stream not available</video>
+                <form id="file_form">
+                    <input type="file" id="file_input">
+                </form>
+                <img id="uploaded_image" src="">
+                <form id="link_form">
+                    <input type="text" id="link_input">
+                </form>
+                <img id="url_image" src="">
+            </div>
+
+            <div class='button'>
                 <button id="estimate_button">Estimate</button>
+            </div>
+
+            <canvas id="canvas">
+            </canvas>
+
+            <div class="output">
+                <img id="photo">
+            </div>
         </div>
 
-        <canvas id="canvas">
-        </canvas>
+        <div class="options">
+            <div class="camera_usage">
+                <input type="radio" id="webcamChoice" name="input_type" value="webcam" checked class="radio_input"/>
+                <label for="webcamChoice" class="radio_label">Webcam</label>
 
-        <div class="output">
-            <img id="photo">
+                <input type="radio" id="imageChoice" name="input_type" value="image" class="radio_input"/>
+                <label for="imageChoice" class="radio_label">Image</label>
+
+                <input type="radio" id="urlChoice" name="input_type" value="url" class="radio_input"/>
+                <label for="urlChoice" class="radio_label">URL</label>
+            </div>
+
+            <div class="empty_options">
+            </div>
+            <div class="output_options">
+                <button class="option_button" id="download_json">Save JSON</button>
+                <button class="option_button" id="download_image">Save image</button>
+            </div>
         </div>
+        <a id="downloadAnchorElem" style="display:none"></a>
     </div>
-
-    <div class="options">
-        <div class="camera_usage">
-            <input type="radio" id="webcamChoice" name="input_type" value="webcam" checked/>
-            <label for="webcamChoice" class="radio_label">Webcam</label>
-
-            <input type="radio" id="imageChoice" name="input_type" value="image" />
-            <label for="imageChoice" class="radio_label">Image</label>
-
-            <input type="radio" id="urlChoice" name="input_type" value="url"/>
-            <label for="urlChoice" class="radio_label">URL</label>
-
-<!--            <form class="option_horizontal" name="file_form" onsubmit="alert('Currently not implemented:(');return false">-->
-<!--                <input type="file" id="file_input"/>-->
-<!--                <input type="submit" value="Upload File" name="submit" id="file_submit" />-->
-<!--            </form>-->
-<!--            <form class="option_horizontal" name="url_form" onsubmit="alert('Currently not implemented:(');return false">-->
-<!--                <input type="text" id="link_input"/>-->
-<!--                <input type="submit" value="Submit URL" name="submit" id="link_submit" />-->
-<!--            </form>-->
-        </div>
-        <div class="empty_options"></div>
-        <div class="output_options">
-            <button class="option_button" id="download_json">Save JSON</button>
-            <button class="option_button" id="download_image">Save image</button>
-        </div>
-    </div>
-
-    <a id="downloadAnchorElem" style="display:none"></a>
-
-</div>
 </body>
 </html>
 

@@ -1,4 +1,13 @@
 
+// calculates scale to fit into (640x480) bbox
+function get_scale(img_h, img_w) {
+    var smallest_side = Math.min(img_h, img_w);
+    var scale = 480 / smallest_side;
+    var largest_side = Math.max(img_h, img_w);
+    if (largest_side * scale > 640) { scale = 640 / largest_side; }
+    return scale;
+}
+
 
 (function() {
 
@@ -12,13 +21,28 @@
     var photo = null;
     var estimate_button = null;
 
+    // downlaod buttons
     var download_image = null;
     var download_json = null;
 
-    var upload_image = null;
-    var submit_url = null;
+    // input mode radio buttons
+    var webcamChoice = null;
+    var imageChoice = null;
+    var urlChoice = null;
 
+    // called as page is fully loaded
     function startup() {
+
+        webcamChoice = document.getElementById('webcamChoice');
+        imageChoice = document.getElementById('imageChoice');
+        urlChoice = document.getElementById('urlChoice');
+
+        buttons = [webcamChoice, imageChoice, urlChoice];
+
+        // page is being reloaded every time input mode changes using radio buttons
+        for (let i = 0; i < buttons.length; i++) {
+            buttons[i].addEventListener('click', _ => window.location.reload(false));
+        }
 
         canvas = document.getElementById('canvas');
         photo = document.getElementById('photo');
@@ -27,7 +51,7 @@
         download_image = document.getElementById('download_image');
         download_json = document.getElementById('download_json');
 
-        if (document.getElementById('webcamChoice').checked) {
+        if (webcamChoice.checked) {
 
             document.getElementById('uploaded_image').style.display = 'none';
             document.getElementById('url_image').style.display = 'none';
@@ -62,13 +86,12 @@
                 }
             }, false);
 
-        } else if (document.getElementById('imageChoice').checked) {
+        } else if (imageChoice.checked) {
             height = 480;
             document.getElementById('video').style.display = 'none';
             document.getElementById('link_form').style.display = 'none';
             document.getElementById('url_image').style.display = 'none';
-
-        } else if (document.getElementById('urlChoice').checked) {
+        } else if (urlChoice.checked) {
             height = 480;
             document.getElementById('uploaded_image').style.display = 'none';
             document.getElementById('file_form').style.display = 'none';
@@ -92,6 +115,7 @@
         emptyImage();
     }
 
+    // called when Save JSON button is clicked
     function downloadJSON() {
         if (localStorage.hasOwnProperty('current_prediction')) {
             var data = localStorage.getItem('current_prediction');
@@ -103,6 +127,7 @@
         }
     }
 
+    // called when Save image button is called
     function downloadImage() {
         if (localStorage.hasOwnProperty('current_canvas')) {
             var data = localStorage.getItem('current_canvas');
@@ -114,104 +139,75 @@
 
     }
 
+    // fills output image with black color if there is not image input to evaluate
     function emptyImage() {
         var context = canvas.getContext('2d');
         context.fillStyle = "#000";
         context.fillRect(0, 0, canvas.width, canvas.height);
-
         var data = canvas.toDataURL('image/png');
         photo.setAttribute('src', data);
     }
 
+    // runs emotion recognition based on given input mode
     async function processImage() {
 
         var context = canvas.getContext('2d');
         canvas.width = width;
         canvas.height = height;
 
-        if (document.getElementById('webcamChoice').checked) {
+        if (webcamChoice.checked) {
             if (streaming) {
                 context.drawImage(video, 0, 0, width, height);
             } else {
                 emptyImage();
             }
-        } else if (document.getElementById('imageChoice').checked) {
+        } else if (imageChoice.checked) {
             image_input = document.getElementById('file_input');
             img = document.getElementById('uploaded_image');
+            var temp_image = new Image;
 
             if (image_input.files[0]) {
                 var promise = await new Promise(function(resolve, reject){
-                   img.onload = function () {resolve();};
-                   img.src = URL.createObjectURL(image_input.files[0]);
+                   temp_image.onload = function () {resolve();};
+                   temp_image.src = URL.createObjectURL(image_input.files[0]);
                 });
-
-                img_h = img.height;
-                img_w = img.width;
-
-                if (img_w < width) {
-                    var dx = int((width - img_w) / 2);
-                    var sx = 0;
-                } else if (img_w > width){
-                    var dx = 0;
-                    var sx = int((img.width - width) / 2);
-                } else {
-                    var dx = 0;
-                    var sx = 0;
-                }
-                if (img_h < height) {
-                    var dy = int((height - img_h) / 2);
-                    var sy = 0;
-                } else if (img_h > height) {
-                    var dy = 0;
-                    var sy = int((img.height - height) / 2);
-                } else {
-                    var dy = 0;
-                    var sy = 0;
-                }
-                context.drawImage(img, sx, sy, img_w - sx, img_h - sy, dx, dy, width - dx, height - dy);
+                // rescale image to fit into input/output areas
+                var img_h = temp_image.height;
+                var img_w = temp_image.width;
+                var scale = get_scale(img_h, img_w);
+                dWidth = Math.floor(scale * img_w);
+                dHeight = Math.floor(scale * img_h);
+                context.drawImage(temp_image, 0, 0, dWidth, dHeight);
+                img.setAttribute('src', canvas.toDataURL('image/png'));
             } else {
                 emptyImage();
             }
-        } else if (document.getElementById('urlChoice').checked) {
+        } else if (urlChoice.checked) {
             url_input = document.getElementById('link_input');
             img = document.getElementById('url_image');
+            var temp_image = new Image;
 
             if (url_input.value) {
                 var promise = await new Promise(function(resolve, reject){
-                    img.onload = function () {resolve();};
-                    img.setAttribute('crossOrigin', 'anonymous');
-                    img.src = url_input.value;
+                    temp_image.onload = function () {resolve();};
+                    temp_image.setAttribute('crossOrigin', 'anonymous');
+                    temp_image.src = url_input.value;
                 });
+                // rescale image to fit into input/output areas
+                var img_h = temp_image.height;
+                var img_w = temp_image.width;
+                var scale = get_scale(img_h, img_w);
+                dWidth = Math.floor(scale * img_w);
+                dHeight = Math.floor(scale * img_h);
 
-                img_h = img.height;
-                img_w = img.width;
-
-                if (img_w < width) {
-                    var dx = int((width - img_w) / 2);
-                    var sx = 0;
-                } else if (img_w > width){
-                    var dx = 0;
-                    var sx = int((img.width - width) / 2);
-                } else {
-                    var dx = 0;
-                    var sx = 0;
-                }
-                if (img_h < height) {
-                    var dy = int((height - img_h) / 2);
-                    var sy = 0;
-                } else if (img_h > height) {
-                    var dy = 0;
-                    var sy = int((img.height - height) / 2);
-                } else {
-                    var dy = 0;
-                    var sy = 0;
-                }
-                context.drawImage(img, sx, sy, img_w - sx, img_h - sy, dx, dy, width - dx, height - dy);
+                context.drawImage(temp_image, 0, 0, dWidth, dHeight);
+                img.setAttribute('src', canvas.toDataURL('image/png'));
             } else {
                 emptyImage();
             }
         }
 
+        // cache image for possible Download action
         localStorage.setItem('current_canvas', canvas.toDataURL('image/png'));
         let imageBlob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
 
@@ -235,10 +231,7 @@
                 context.fillText(category + ': ' + score.toFixed(2).toString(), bbox[0], bbox[1] - 15);
             }
 
-        var file = canvas.toDataURL('image/png');
-
-
-        photo.setAttribute('src', file);
+        photo.setAttribute('src', canvas.toDataURL('image/png'));
         localStorage.setItem('current_prediction', JSON.stringify(result))
 
         }, function(error) {

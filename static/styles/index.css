@@ -1,151 +1,141 @@
 #video {
     width: 640px;
     height: 480px;
-  }
-
-#uploaded_image {
-    width: 640px;
-    height: 480px;
 }
 
-#url_image {
-    width: 640px;
-    height: 480px;
-}
-  
 #photo {
-border: 1px solid white;
-width:640px;
-height:480px;
+    border: 1px solid white;
+    width: 640px;
+    height: 480px;
 }
 
 #canvas {
-display:none;
+    display: none;
 }
 
 .input_area {
-width: 640px;
-height: 480px;
-display: flex;
-border: 1px solid white;
+    width: 640px;
+    height: 480px;
+    display: flex;
+    border: 1px solid white;
 }
 
 
 .button {
-width: 150px;
-height: 480px;
-display: inline-block;
-display: flex;
-align-items: center;
-justify-content: center;
+    width: 150px;
+    height: 480px;
+    display: inline-block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .output {
-width: 640px;
-height: 480px;
-display:inline-block;
-border: 1px solid white;
+    width: 640px;
+    height: 480px;
+    display: inline-block;
+    border: 1px solid white;
 }
 
 #estimate_button {
-position: relative;
-background-color: black;
-border: 1px solid white;
-font-family: "Ubuntu Mono";
-font-size: 25px;
-color:white;
+    color: white;
+    border: 1px solid white;
+    position: relative;
+    background-color: black;
+    font-size: 25px;
+    font-family: "Ubuntu Mono";
 }
 
 body {
-background-color: black;
+    background-color: black;
 }
 
 .contentarea {
-display: block;
-justify-content: center;
-font-size: 16px;
-font-family: "Ubuntu Mono";
-color: white;
-width: 100%;
+    width: 100%;
+    color: white;
+    display: block;
+    justify-content: center;
+    font-size: 16px;
+    font-family: "Ubuntu Mono";
+}
+
+.title {
+    position: relative;
+    top: 50px;
 }
 
 .textarea {
-  text-align: center;
-  height: 150px;
+    text-align: center;
+    height: 150px;
 }
 
 .funcarea {
-display: flex;
-align-content: center;
-justify-content: center;
-font-family: "Ubuntu Mono";
-color: white;
-width: 100%;
+    width: 100%;
+    color: white;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    font-family: "Ubuntu Mono";
 }
 
 .options {
-height: 100px;
-display: flex;
-align-content: center;
-justify-content: center;
-background: black;
-border 1px solid white;
-width: 100%;
+    width: 100%;
+    height: 100px;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    background: black;
+    border 1px solid white;
 }
 
 .camera_usage {
-display: flex;
-justify-content: center;
-align-items: center;
-width: 640px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 640px;
 }
 
 .output_options {
-display: flex;
-justify-content: space-around;
-align-items: center;
-width: 640px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 640px;
 }
 
 .empty_options {
-width: 150px;
+    width: 150px;
 }
 
 .option_button {
-color: white;
-background-color: black;
-font-family: "Ubuntu Mono";
-font-size: 25px;
-width: 180px;
+    color: white;
+    background-color: black;
+    font-family: "Ubuntu Mono";
+    font-size: 25px;
+    width: 180px;
 }
 
 input {
-color: white;
-background-color: black;
-margin: 5px;
-font-family: "Ubuntu Mono";
-font-size: 25px;
-}
-
-.option_horizontal {
-display: flex;
-flex-direction: column;
+    color: white;
+    background-color: black;
+    margin: 5px;
+    font-family: "Ubuntu Mono";
+    font-size: 25px;
 }
 
 #file_form {
-position: absolute;
-top: 100px;
-left: 380px;
+    position: absolute;
+    top: 100px;
+    left: 380px;
 }
 
 #link_form {
-position: absolute;
-top: 100px;
-left: 430px;
+    position: absolute;
+    top: 100px;
+    left: 430px;
 }
 
 .radio_label {
-font-family: "Ubuntu Mono";
-font-size: 25px;
-margin: 10px;
+    font-family: "Ubuntu Mono";
+    font-size: 25px;
+    margin: 10px;
 }
