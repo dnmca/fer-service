@@ -11,6 +11,8 @@ PROJECT_ROOT = pathlib.Path(__file__).parent
 MODEL_JSON = PROJECT_ROOT / 'resources' / 'augmented-baseline.json'
 MODEL_WEIGHTS = PROJECT_ROOT / 'resources' / 'augmented-baseline.h5'
 
+
+# category id to category name mapping
 MAPPING = {
     0: 'Angry',
     1: 'Disgust',
@@ -25,6 +27,10 @@ MAPPING = {
 class EmotionEstimator:
 
     def __init__(self):
+        """
+        Loads Keras model from json and its weights from h5 file.
+        Initializes Haar Casscade model for face detection
+        """
 
         with open(str(MODEL_JSON), 'r') as file:
             self.model = model_from_json(file.read())
@@ -37,20 +43,27 @@ class EmotionEstimator:
         self.input_h = 48
 
     def detect_faces(self, image):
+        """
+        Detects faces in the image using Haar cascade model.
+        :param image: cv2 image object
+        :return: dictionary with the following scheme:
 
+        {0: {
+                'bbox': [a, b, w, h],
+                'crop': image cut using respective bbox
+            },
+            ...}
+        """
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         detections = self.haar.detectMultiScale(gray, scaleFactor=1.2, minNeighbors=5)
         output = {}
 
         for bbox in detections:
             x, y, w, h = bbox
-
             x0, y0 = x, y
             x1, y1 = x + w, y + h
-
             crop = gray[y0:y1, x0:x1]
             h, w = crop.shape
-
             if h * w > 0:
                 face_id = len(output)
                 output[face_id] = {'bbox': [x0, y0, x1, y1], 'crop': crop}
@@ -58,12 +71,17 @@ class EmotionEstimator:
         return output
 
     def predict(self, image):
-
+        """
+        Classifies each image for 7 types of emotions using pretrained Keras model
+        :param image:
+        :return:
+        """
         faces = self.detect_faces(image)
 
         results = {}
 
         for face_id, data in faces.items():
+            # image pre-processing
             img = data['crop']
             img = cv2.resize(img, (self.input_w, self.input_h), interpolation=cv2.INTER_AREA)
             img = img / 255
@@ -83,7 +101,13 @@ class EmotionEstimator:
         return results
 
     def visualize(self, img, predictions, target_dir='.'):
-
+        """
+        Visualization function for debug purposes
+        :param img:
+        :param predictions:
+        :param target_dir:
+        :return:
+        """
         target_img = pathlib.Path(target_dir) / 'result.png'
 
         for face_id, pred in predictions.items():

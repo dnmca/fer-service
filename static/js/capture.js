@@ -98,45 +98,35 @@ function get_scale(img_h, img_w) {
             document.getElementById('video').style.display = 'none';
         }
 
-
         estimate_button.addEventListener('click', function(ev){
             processImage();
             ev.preventDefault();
         }, false);
 
         download_json.addEventListener('click', function(ev){
-            downloadJSON();
+            downloadFile('current_prediction');
         }, false);
 
         download_image.addEventListener('click', function(ev){
-            downloadImage();
+            downloadFile('current_canvas');
         }, false);
 
         emptyImage();
     }
 
-    // called when Save JSON button is clicked
-    function downloadJSON() {
-        if (localStorage.hasOwnProperty('current_prediction')) {
-            var data = localStorage.getItem('current_prediction');
-            var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.parse(JSON.stringify(data)));
-            var dlAnchorElem = document.getElementById('downloadAnchorElem');
-            dlAnchorElem.setAttribute("href",     dataStr     );
-            dlAnchorElem.setAttribute("download", "prediction.json");
-            dlAnchorElem.click();
-        }
-    }
-
-    // called when Save image button is called
-    function downloadImage() {
-        if (localStorage.hasOwnProperty('current_canvas')) {
-            var data = localStorage.getItem('current_canvas');
-            var dlAnchorElem = document.getElementById('downloadAnchorElem');
-            dlAnchorElem.setAttribute("href",     data     );
-            dlAnchorElem.setAttribute("download", "image.png");
-            dlAnchorElem.click();
-        }
-
+    // implements functionality for file download (annotation/image)
+    function downloadFile(localStorageKey) {
+       var data = localStorage.getItem(localStorageKey);
+       if (localStorageKey == "current_prediction") {
+            var data = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.parse(JSON.stringify(data)));
+            var fileName = "prediction.json";
+       } else if (localStorageKey == "current_canvas") {
+            var fileName = "image.png"
+       }
+        var dlAnchorElem = document.getElementById('downloadAnchorElem');
+        dlAnchorElem.setAttribute("href", data);
+        dlAnchorElem.setAttribute("download", fileName);
+        dlAnchorElem.click();
     }
 
     // fills output image with black color if there is not image input to evaluate
@@ -177,6 +167,7 @@ function get_scale(img_h, img_w) {
                 var scale = get_scale(img_h, img_w);
                 dWidth = Math.floor(scale * img_w);
                 dHeight = Math.floor(scale * img_h);
+
                 context.drawImage(temp_image, 0, 0, dWidth, dHeight);
                 img.setAttribute('src', canvas.toDataURL('image/png'));
             } else {
@@ -226,7 +217,7 @@ function get_scale(img_h, img_w) {
                 context.rect(bbox[0], bbox[1], bbox[2] - bbox[0], bbox[3] - bbox[1]);
                 context.stroke();
 
-                context.font = "30px Ubuntu Mono";
+                context.font = "25px Ubuntu Mono";
                 context.fillStyle = "red";
                 context.fillText(category + ': ' + score.toFixed(2).toString(), bbox[0], bbox[1] - 15);
             }
